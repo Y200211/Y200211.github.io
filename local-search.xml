@@ -11,6 +11,12 @@
     <content type="html"><![CDATA[<hr><h2 id="title-测试文章date-2021-06-10-16-35-20tags-原创categories-Java"><a href="#title-测试文章date-2021-06-10-16-35-20tags-原创categories-Java" class="headerlink" title="title: 测试文章date: 2021-06-10 16:35:20tags:- 原创categories:- Java"></a>title: 测试文章<br>date: 2021-06-10 16:35:20<br>tags:<br>- 原创<br>categories:<br>- Java</h2><p>这是一篇测试文章</p><img src="/2023/05/15/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/test.png" class="" title="图片引用方法一"><p><img src="/test.png" alt="图片引用方法二"></p><p><img src="/images/test.png" alt="图片引用方法三"><br>————————————————<br>版权声明：本文为CSDN博主「淡淡的说非」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a href="https://blog.csdn.net/yaorongke/article/details/119089190">https://blog.csdn.net/yaorongke/article/details/119089190</a></p>]]></content>
     
     
+    <categories>
+      
+      <category>Diary</category>
+      
+    </categories>
+    
     
   </entry>
   
