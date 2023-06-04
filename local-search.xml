@@ -5,31 +5,24 @@
   
   <entry>
     <title>测试文章</title>
-    <link href="/2023/05/15/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
-    <url>/2023/05/15/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</url>
+    <link href="/2023/06/04/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
+    <url>/2023/06/04/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</url>
     
-    <content type="html"><![CDATA[<hr><h2 id="title-测试文章date-2021-06-10-16-35-20tags-原创categories-Java"><a href="#title-测试文章date-2021-06-10-16-35-20tags-原创categories-Java" class="headerlink" title="title: 测试文章date: 2021-06-10 16:35:20tags:- 原创categories:- Java"></a>title: 测试文章<br>date: 2021-06-10 16:35:20<br>tags:<br>- 原创<br>categories:<br>- Java</h2><p>这是一篇测试文章</p><img src="/2023/05/15/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/test.png" class="" title="图片引用方法一"><p><img src="/test.png" alt="图片引用方法二"></p><p><img src="/images/test.png" alt="图片引用方法三"><br>————————————————<br>版权声明：本文为CSDN博主「淡淡的说非」的原创文章，遵循CC 4.0 BY-SA版权协议，转载请附上原文出处链接及本声明。<br>原文链接：<a href="https://blog.csdn.net/yaorongke/article/details/119089190">https://blog.csdn.net/yaorongke/article/details/119089190</a></p>]]></content>
+    <content type="html"><![CDATA[]]></content>
     
     
     <categories>
       
-      <category>Diary</category>
+      <category>博客</category>
       
     </categories>
     
     
-  </entry>
-  
-  
-  
-  <entry>
-    <title></title>
-    <link href="/2023/05/15/test_artical/"/>
-    <url>/2023/05/15/test_artical/</url>
-    
-    <content type="html"><![CDATA[<p><img src="https://secure2.wostatic.cn/static/grbNRsSk46gTTzWkj1mgRM/image.png?auth_key=1684135680-39Xn5ou9SzFPAEG5tVQAkU-0-ef1df26a8c8506c358a5aec11f807e36"></p><p>暴力解法：先排序，然后看连续的数字长度，但是复杂度超过O(n)了。</p><p>正确的解法：先用hash表去重，mp :&#x3D; map[int]bool, 这样相当于在数轴上标出了出现过的数，然后再次从头遍历nums，这里可以进行剪枝优化，看mp[v - 1]是否为true，如果是true ，就说明他前面一个的数在数轴里出现过，所以不是开头的数，所以continue, 这样下来复杂度就满足条件了。</p><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><code class="hljs Go"><span class="hljs-function"><span class="hljs-keyword">func</span> <span class="hljs-title">longestConsecutive</span><span class="hljs-params">(nums []<span class="hljs-type">int</span>)</span></span> <span class="hljs-type">int</span> &#123;<br>    mp := <span class="hljs-keyword">map</span>[<span class="hljs-type">int</span>]<span class="hljs-type">bool</span>&#123;&#125;<br>    <span class="hljs-keyword">for</span> _, v := <span class="hljs-keyword">range</span> nums &#123;<br>        mp[v] = <span class="hljs-literal">true</span><br>    &#125;<br>    cnt, max := <span class="hljs-number">1</span>, <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> _, v := <span class="hljs-keyword">range</span> nums &#123;<br>        <span class="hljs-keyword">if</span> mp[v - <span class="hljs-number">1</span>] != <span class="hljs-literal">true</span> &#123;<br>            <br>            cnt = <span class="hljs-number">1</span><br>            <span class="hljs-keyword">for</span> mp[v + <span class="hljs-number">1</span>] == <span class="hljs-literal">true</span> &#123;<br>                cnt ++<br>                v ++<br>            &#125;<br>            <span class="hljs-keyword">if</span> cnt &gt; max &#123;<br>                max = cnt<br>            &#125;<br>        &#125;<br>    &#125;<br>    <span class="hljs-keyword">return</span> max<br>&#125;<br></code></pre></td></tr></table></figure>]]></content>
-    
-    
+    <tags>
+      
+      <tag>博客操作指南</tag>
+      
+    </tags>
     
   </entry>
   
