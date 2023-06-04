@@ -8,7 +8,7 @@
     <link href="/2023/06/04/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
     <url>/2023/06/04/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</url>
     
-    <content type="html"><![CDATA[]]></content>
+    <content type="html"><![CDATA[<p>第一篇文章就先把怎么更新博客说明白吧，就当写个时间胶囊，以防自己忘了😅 ，本篇文章只适合hexo已经搭建好博客，但是不知道怎么更新的人，网上关于搭建hexo博客的文章也挺多的。</p><p>经过滴滴二面面试官的拷打，我已痛定思痛，开始写技术博客，并且开始注重理论和实践的相结合。</p><ol><li>首先找到自己的blog文件夹（我的blog文件在E盘下），用vscode打开之后找到source下面的_posts文件夹，你的文章就以markdown形式储存在这，你可以先用wolai云笔记记录，之后贴到这里，双重保险不怕丢了，这里主要介绍一下怎么给文章分类和打tag吧。下面这段东西在表头粘上就行</li></ol><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Go">---<br>title: Your Article Title<br>date: YYYY-MM-DD HH:MM:SS<br>categories:<br>  - Category1<br>  - Category2<br>tags:<br>  - Tag1<br>  - Tag2<br>---<br></code></pre></td></tr></table></figure><p>2.把文章写进去之后如何推到远端呢，通过下面这三个命令即可，顺序不能乱，原因看完就知道了</p><ul><li><p>hexo g</p><p>  是hexo generate的缩写，把博客文件夹下面的文章转换成HTML静态页面，这些静态页面储存在博客文件夹下的public下面</p></li><li><p>hexo s</p><p>  是hexo server的缩写，把文件夹下的文章在本地的服务器启动，默认端口4000，这时就可以看页面是否符合你的要求，如果符合的话就可以推送到远端了</p></li><li><p>hexo d</p><p>  是hexo deploy的缩写，把页面推送到博客托管平台，一些配置在config下</p></li></ul>]]></content>
     
     
     <categories>
