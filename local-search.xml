@@ -4,7 +4,7 @@
   
   
   <entry>
-    <title>测试文章</title>
+    <title>博客操作指南</title>
     <link href="/2023/06/04/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
     <url>/2023/06/04/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</url>
     
@@ -20,7 +20,9 @@
     
     <tags>
       
-      <tag>博客操作指南</tag>
+      <tag>hexo</tag>
+      
+      <tag>指南</tag>
       
     </tags>
     
