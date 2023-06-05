@@ -16,23 +16,23 @@
   <meta name="author" content="杨佰鑫">
   <meta name="keywords" content="">
   
-    <meta name="description" content="第一篇文章就先把怎么更新博客说明白吧，就当写个时间胶囊，以防自己忘了😅 ，本篇文章只适合hexo已经搭建好博客，但是不知道怎么更新的人，网上关于搭建hexo博客的文章也挺多的。 经过滴滴二面面试官的拷打，我已痛定思痛，开始写技术博客，并且开始注重理论和实践的相结合。  首先找到自己的blog文件夹（我的blog文件在E盘下），用vscode打开之后找到source下面的_posts文件夹，你的文">
+    <meta name="description" content="首先先上广为人知的知识点：   1、务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）   2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读3、事务隔离级别：读未提交、读提交、可重复读、串行化4、不同事务隔离级别的区别：   读未提交：一个事务还未提交，它所做的变更就可以被别的事务看到    读提交：一个事务提交之后，它所做的变更才可以被别的事务看到可重复读：一个">
 <meta property="og:type" content="article">
-<meta property="og:title" content="博客操作指南">
-<meta property="og:url" content="http://example.com/2023/06/04/%E5%8D%9A%E5%AE%A2%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/index.html">
+<meta property="og:title" content="MySQL | 事务隔离">
+<meta property="og:url" content="http://example.com/2023/06/05/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/index.html">
 <meta property="og:site_name" content="Y&#39;s blog">
-<meta property="og:description" content="第一篇文章就先把怎么更新博客说明白吧，就当写个时间胶囊，以防自己忘了😅 ，本篇文章只适合hexo已经搭建好博客，但是不知道怎么更新的人，网上关于搭建hexo博客的文章也挺多的。 经过滴滴二面面试官的拷打，我已痛定思痛，开始写技术博客，并且开始注重理论和实践的相结合。  首先找到自己的blog文件夹（我的blog文件在E盘下），用vscode打开之后找到source下面的_posts文件夹，你的文">
+<meta property="og:description" content="首先先上广为人知的知识点：   1、务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）   2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读3、事务隔离级别：读未提交、读提交、可重复读、串行化4、不同事务隔离级别的区别：   读未提交：一个事务还未提交，它所做的变更就可以被别的事务看到    读提交：一个事务提交之后，它所做的变更才可以被别的事务看到可重复读：一个">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-06-04T07:44:22.000Z">
-<meta property="article:modified_time" content="2023-06-04T15:25:40.542Z">
+<meta property="article:published_time" content="2023-06-04T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-05T11:37:41.261Z">
 <meta property="article:author" content="John Doe">
-<meta property="article:tag" content="hexo">
-<meta property="article:tag" content="指南">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="日志">
 <meta name="twitter:card" content="summary_large_image">
   
   
   
-  <title>博客操作指南 - Y&#39;s blog</title>
+  <title>MySQL | 事务隔离 - Y&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -215,7 +215,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="博客操作指南"></span>
+            <span id="subtitle" data-typed-text="MySQL | 事务隔离"></span>
           
         </div>
 
@@ -226,8 +226,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-06-04 15:44" pubdate>
-          2023年6月4日 下午
+        <time datetime="2023-06-05 00:00" pubdate>
+          2023年6月5日 凌晨
         </time>
       </span>
     
@@ -238,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          626 字
+          1.2k 字
         
       </span>
     
@@ -249,7 +249,7 @@
         
         
         
-          6 分钟
+          10 分钟
         
       </span>
     
@@ -295,28 +295,36 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">博客操作指南</h1>
+            <h1 style="display: none">MySQL | 事务隔离</h1>
             
             
               <div class="markdown-body">
                 
-                <p>第一篇文章就先把怎么更新博客说明白吧，就当写个时间胶囊，以防自己忘了😅 ，本篇文章只适合hexo已经搭建好博客，但是不知道怎么更新的人，网上关于搭建hexo博客的文章也挺多的。</p>
-<p>经过滴滴二面面试官的拷打，我已痛定思痛，开始写技术博客，并且开始注重理论和实践的相结合。</p>
-<ol>
-<li>首先找到自己的blog文件夹（我的blog文件在E盘下），用vscode打开之后找到source下面的_posts文件夹，你的文章就以markdown形式储存在这，你可以先用wolai云笔记记录，之后贴到这里，双重保险不怕丢了，这里主要介绍一下怎么给文章分类和打tag吧。下面这段东西在表头粘上就行</li>
-</ol>
-<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Go">---<br>title: Your Article Title<br>date: YYYY-MM-DD HH:MM:SS<br>categories:<br>  - Category1<br>  - Category2<br>tags:<br>  - Tag1<br>  - Tag2<br>---<br></code></pre></td></tr></table></figure>
-
-<p>2.把文章写进去之后如何推到远端呢，通过下面这三个命令即可，顺序不能乱，原因看完就知道了</p>
+                <ul>
+<li><p>首先先上广为人知的知识点：</p>
+<p>  1、务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）</p>
+</li>
+</ul>
+<p>2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读<br>3、事务隔离级别：读未提交、读提交、可重复读、串行化<br>4、不同事务隔离级别的区别：  </p>
+<pre><code class="hljs">读未提交：一个事务还未提交，它所做的变更就可以被别的事务看到  
+</code></pre>
+<p>读提交：一个事务提交之后，它所做的变更才可以被别的事务看到<br>可重复读：一个事务执行过程中看到的数据是一致的。未提交的更改对其他事务是不可见的<br>串行化：对应一个记录会加读写锁，出现冲突的时候，后访问的事务必须等前一个事务执行完成才能继续执行</p>
 <ul>
-<li><p>hexo g</p>
-<p>  是hexo generate的缩写，把博客文件夹下面的文章转换成HTML静态页面，这些静态页面储存在博客文件夹下的public下面</p>
+<li><p>四种隔离级别的实现方法：</p>
+<ul>
+<li>读未提交：直接返回最新值，没有视图的概念</li>
+<li>读提交：每个SQL语句生成一个视图</li>
+<li>可重复度：每个事务开始的时候生成一个视图，一直用到事务结束</li>
+<li>串行化：简单来说就是加锁，用加锁的方式避免并行操作</li>
+</ul>
 </li>
-<li><p>hexo s</p>
-<p>  是hexo server的缩写，把文件夹下的文章在本地的服务器启动，默认端口4000，这时就可以看页面是否符合你的要求，如果符合的话就可以推送到远端了</p>
-</li>
-<li><p>hexo d</p>
-<p>  是hexo deploy的缩写，把页面推送到博客托管平台，一些配置在config下</p>
+<li><p>四种隔离级别具体的使用场景：</p>
+<ul>
+<li>01: Read uncommitted 读未提交; 公司发工资了，领导把5000元打到singo的账号上，但是该事务并未提交，而singo正好去查看账户，发现工资已经到账，是5000元整，非常高兴。可是不幸的是，领导发现发给singo的工资金额不对，是2000元，于是迅速回滚了事务，修改金额后，将事务提交，最后singo实际的工资只有2000元，singo空欢喜一场。</li>
+<li>02:Read committed 读已提交; singo拿着工资卡去消费，系统读取到卡里确实有2000元，而此时她的老婆也正好在网上转账，把singo工资卡的2000元转到另一账户，并在singo之前提交了事务，当singo扣款时，系统检查到singo的工资卡已经没有钱，扣款失败，singo十分纳闷，明明卡里有钱，为何……</li>
+<li>03:Repeatable read 重复读 当singo拿着工资卡去消费时，一旦系统开始读取工资卡信息（即事务开始），singo的老婆就不可能对该记录进行修改，也就是singo的老婆不能在此时转账。</li>
+<li>04：重复读可能出现<a target="_blank" rel="noopener" href="https://so.csdn.net/so/search?q=%E5%B9%BB%E8%AF%BB&spm=1001.2101.3001.7020">幻读</a>： singo的老婆工作在银行部门，她时常通过银行内部系统查看singo的信用卡消费记录。有一天，她正在查询到singo当月信用卡的总消费金额（select sum(amount) from transaction where month &#x3D; 本月）为80元，而singo此时正好在外面胡吃海塞后在收银台买单，消费1000元，即新增了一条1000元的消费记录（insert transaction … ），并提交了事务，随后singo的老婆将singo当月信用卡消费的明细打印到A4纸上，却发现消费总额为1080元，singo的老婆很诧异，以为出现了幻觉，幻读就这样产生了。（幻读是事务执行过程中，别的事务进行插入操作，从而使原来的查询事务出现“幻觉”）</li>
+</ul>
 </li>
 </ul>
 
@@ -337,7 +345,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/%E5%8D%9A%E5%AE%A2/" class="category-chain-item">博客</a>
+  <a href="/categories/MySQL/" class="category-chain-item">MySQL</a>
   
   
 
@@ -352,9 +360,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/hexo/">#hexo</a>
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
       
-        <a href="/tags/%E6%8C%87%E5%8D%97/">#指南</a>
+        <a href="/tags/%E6%97%A5%E5%BF%97/">#日志</a>
       
     </div>
   
@@ -366,8 +374,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>博客操作指南</div>
-      <div>http://example.com/2023/06/04/博客操作指南/</div>
+      <div>MySQL | 事务隔离</div>
+      <div>http://example.com/2023/06/05/03讲事务隔离/</div>
     </div>
     <div class="license-meta">
       
@@ -379,7 +387,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年6月4日</div>
+          <div>2023年6月5日</div>
         </div>
       
       
@@ -411,15 +419,21 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/06/05/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/" title="MySQL | 事务隔离">
+                      <a href="/2023/06/05/02%E8%AE%B2%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" title="MySQL | 日志系统">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MySQL | 事务隔离</span>
+                        <span class="hidden-mobile">MySQL | 日志系统</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
                   </article>
                   <article class="post-next col-6">
                     
+                    
+                      <a href="/2023/06/04/%E5%8D%9A%E5%AE%A2%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/" title="博客操作指南">
+                        <span class="hidden-mobile">博客操作指南</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
                     
                   </article>
                 </div>
