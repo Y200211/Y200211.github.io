@@ -4,9 +4,36 @@
   
   
   <entry>
+    <title>MySQL | 日志系统</title>
+    <link href="/2023/06/05/02%E8%AE%B2%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/"/>
+    <url>/2023/06/05/02%E8%AE%B2%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/</url>
+    
+    <content type="html"><![CDATA[<p>首先介绍两个日志的基本概念，一个是物理操作，一个是逻辑操作。</p><ul><li><p>物理操作</p><p>  物理操作是对数据库底层数据存储结构的操作，即对数据在物理存储设备上的读写操作，例如读取和写入具体的数据块、页或者记录等。物理操作直接访问存储设备，包括对设备的读取、写入、删除操作等，因此它对应着实际的存储结构。 因为redolog是Innodb中特有的日志，又因为存储引擎在最底层，所以redolog是物理操作。</p></li><li><p>逻辑操作</p><p>  逻辑操作是对数据库中对象的操作，例如对表中数据的增删改查等操作，它是基于用户或应用程序想要执行的实际操作进行的操作。逻辑操作是以SQL语言的形式体现的，根据不同的SQL语句可以进行增删改查等逻辑操作，而不考虑数据的存储细节和实际操作过程。因为binlog是mysql中自带的，所以在上层，只能进行逻辑操作的记录。</p></li></ul><p>接下来来讲两个日志，一个是redolog，一个是binlog。</p><ul><li><p>redolog（主要作用是crash-safe）</p><p>  redolog出现的目的是完成事物的一致性，当事务进行到一半的时候mysql突然崩溃了，redolog可以进行回滚操作，它本身是以二进制的方式存储的。还有一个持久化的目的，因为每次想把操作持久化都要进行磁盘的读写，但是磁盘读写太慢了，所以先在内存记录下来，当系统不忙的时候在写到磁盘上去。其实就是MySQL里经常说到的WAL技术，WAL的全称是Write-Ahead Logging。因为redolog是物理操作，所以存的都是结果如何变更，不会存具体的逻辑。它的存储方式如下图：</p><p>  checkpoint表示从哪里开始，write pos表示在哪里结束</p><p>  <img src="https://secure2.wostatic.cn/static/6QEVzctFnb9hojQNRBAch6/image.png?auth_key=1685951732-vKEmxpARFGTXZ2DsnRdLio-0-c43dbf264b712af5f34f64673b782ef2"></p></li><li><p>binlog（主要作用是归档，即回到某一个时间点的数据库状态）</p><p>  底层使用二进制存储的语句逻辑，加入想回到中午那时候的数据库，就需要找到中午之前最近的全局备份，然后执行binlog到中午即可。</p><p>  常见的 binlog 格式有三种：statement、row 和 mixed，不同格式的 binlog 会记录不同粒度的信息。</p><ul><li>statement 格式是最常见的 binlog 格式，它记录的是 SQL 语句的执行信息。也就是说，如果一个 SQL 语句要修改多行数据，那它只需要记录这条语句本身，而不需要记录每行数据的修改情况。这种格式下日志量小，但是存在一定的不一致性。</li><li>row 格式记录的是每一行数据修改的详细情况，一条修改命令会被具体记录为几条将要修改数据的语句。这种格式下数据更为详细，但是日志量较大。</li><li>mixed 格式在 statement 和 row 格式之间切换，刚开始以 statement 方式记录日志，当出现不支持语句级别的操作时，会自动转化为 row 格式记录。mixed 格式将 statement 和 row 格式的优点结合起来，同时也存在对应的缺点。</li></ul></li></ul><p>这两个日志相结合，使用的时候需要保证一致性，如果在两个日志中间crash了，保证不了一致性，所以引入了一个类似事务的操作，如下图：</p><p>将redo log的写入拆成了两个步骤：prepare和commit，这就是”两阶段提交”。</p><p><img src="https://secure2.wostatic.cn/static/cAC2ALzsaU3uzNME5igau5/image.png?auth_key=1685952120-3gmcfMXkULZMLumRwL1qw7-0-61977f040482aeba91a39c3eebd21c34"></p><p>redo log用于保证crash-safe能力。innodb_flush_log_at_trx_commit这个参数设置成1的时候，表示每次事务的redo log都直接持久化到磁盘。这个参数我建议你设置成1，这样可以保证MySQL异常重启之后数据不丢失。</p><p>sync_binlog这个参数设置成1的时候，表示每次事务的binlog都持久化到磁盘。这个参数我也建议你设置成1，这样可以保证MySQL异常重启之后binlog不丢失。</p>]]></content>
+    
+    
+    <categories>
+      
+      <category>MySQL</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>数据库</tag>
+      
+      <tag>日志</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>博客操作指南</title>
-    <link href="/2023/06/04/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/"/>
-    <url>/2023/06/04/%E6%B5%8B%E8%AF%95%E6%96%87%E7%AB%A0/</url>
+    <link href="/2023/06/04/%E5%8D%9A%E5%AE%A2%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/"/>
+    <url>/2023/06/04/%E5%8D%9A%E5%AE%A2%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/</url>
     
     <content type="html"><![CDATA[<p>第一篇文章就先把怎么更新博客说明白吧，就当写个时间胶囊，以防自己忘了😅 ，本篇文章只适合hexo已经搭建好博客，但是不知道怎么更新的人，网上关于搭建hexo博客的文章也挺多的。</p><p>经过滴滴二面面试官的拷打，我已痛定思痛，开始写技术博客，并且开始注重理论和实践的相结合。</p><ol><li>首先找到自己的blog文件夹（我的blog文件在E盘下），用vscode打开之后找到source下面的_posts文件夹，你的文章就以markdown形式储存在这，你可以先用wolai云笔记记录，之后贴到这里，双重保险不怕丢了，这里主要介绍一下怎么给文章分类和打tag吧。下面这段东西在表头粘上就行</li></ol><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs Go">---<br>title: Your Article Title<br>date: YYYY-MM-DD HH:MM:SS<br>categories:<br>  - Category1<br>  - Category2<br>tags:<br>  - Tag1<br>  - Tag2<br>---<br></code></pre></td></tr></table></figure><p>2.把文章写进去之后如何推到远端呢，通过下面这三个命令即可，顺序不能乱，原因看完就知道了</p><ul><li><p>hexo g</p><p>  是hexo generate的缩写，把博客文件夹下面的文章转换成HTML静态页面，这些静态页面储存在博客文件夹下的public下面</p></li><li><p>hexo s</p><p>  是hexo server的缩写，把文件夹下的文章在本地的服务器启动，默认端口4000，这时就可以看页面是否符合你的要求，如果符合的话就可以推送到远端了</p></li><li><p>hexo d</p><p>  是hexo deploy的缩写，把页面推送到博客托管平台，一些配置在config下</p></li></ul>]]></content>
     
