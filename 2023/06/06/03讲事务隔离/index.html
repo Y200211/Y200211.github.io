@@ -16,15 +16,15 @@
   <meta name="author" content="杨佰鑫">
   <meta name="keywords" content="">
   
-    <meta name="description" content="首先先上广为人知的知识点：   1、务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）   2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读3、事务隔离级别：读未提交、读提交、可重复读、串行化4、不同事务隔离级别的区别：   读未提交：一个事务还未提交，它所做的变更就可以被别的事务看到    读提交：一个事务提交之后，它所做的变更才可以被别的事务看到可重复读：一个">
+    <meta name="description" content="首先先上广为人知的知识点：  1、事务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读3、事务隔离级别：读未提交、读提交、可重复读、串行化4、不同事务隔离级别的区别：   读未提交：一个事务还未提交，它所做的变更就可以被别的事务看到    读提交：一个事务提交之后，它所做的变更才可以被别的事务看到可重复读：一个事务执">
 <meta property="og:type" content="article">
 <meta property="og:title" content="MySQL | 事务隔离">
-<meta property="og:url" content="http://example.com/2023/06/05/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/index.html">
+<meta property="og:url" content="http://example.com/2023/06/06/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/index.html">
 <meta property="og:site_name" content="Y&#39;s blog">
-<meta property="og:description" content="首先先上广为人知的知识点：   1、务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）   2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读3、事务隔离级别：读未提交、读提交、可重复读、串行化4、不同事务隔离级别的区别：   读未提交：一个事务还未提交，它所做的变更就可以被别的事务看到    读提交：一个事务提交之后，它所做的变更才可以被别的事务看到可重复读：一个">
+<meta property="og:description" content="首先先上广为人知的知识点：  1、事务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读3、事务隔离级别：读未提交、读提交、可重复读、串行化4、不同事务隔离级别的区别：   读未提交：一个事务还未提交，它所做的变更就可以被别的事务看到    读提交：一个事务提交之后，它所做的变更才可以被别的事务看到可重复读：一个事务执">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2023-06-04T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-05T11:37:41.261Z">
+<meta property="article:published_time" content="2023-06-05T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-06T16:31:54.258Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="数据库">
 <meta property="article:tag" content="日志">
@@ -226,8 +226,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-06-05 00:00" pubdate>
-          2023年6月5日 凌晨
+        <time datetime="2023-06-06 00:00" pubdate>
+          2023年6月6日 凌晨
         </time>
       </span>
     
@@ -301,11 +301,9 @@
               <div class="markdown-body">
                 
                 <ul>
-<li><p>首先先上广为人知的知识点：</p>
-<p>  1、务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）</p>
-</li>
+<li>首先先上广为人知的知识点：</li>
 </ul>
-<p>2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读<br>3、事务隔离级别：读未提交、读提交、可重复读、串行化<br>4、不同事务隔离级别的区别：  </p>
+<p>1、事务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）<br>2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读<br>3、事务隔离级别：读未提交、读提交、可重复读、串行化<br>4、不同事务隔离级别的区别：  </p>
 <pre><code class="hljs">读未提交：一个事务还未提交，它所做的变更就可以被别的事务看到  
 </code></pre>
 <p>读提交：一个事务提交之后，它所做的变更才可以被别的事务看到<br>可重复读：一个事务执行过程中看到的数据是一致的。未提交的更改对其他事务是不可见的<br>串行化：对应一个记录会加读写锁，出现冲突的时候，后访问的事务必须等前一个事务执行完成才能继续执行</p>
@@ -375,7 +373,7 @@
   <div class="license-box my-3">
     <div class="license-title">
       <div>MySQL | 事务隔离</div>
-      <div>http://example.com/2023/06/05/03讲事务隔离/</div>
+      <div>http://example.com/2023/06/06/03讲事务隔离/</div>
     </div>
     <div class="license-meta">
       
@@ -387,7 +385,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年6月5日</div>
+          <div>2023年6月6日</div>
         </div>
       
       
@@ -419,9 +417,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/06/05/02%E8%AE%B2%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" title="MySQL | 日志系统">
+                      <a href="/2023/06/07/04%E8%AE%B2%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E7%B4%A2%E5%BC%95/" title="MySQL | 深入浅出索引">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MySQL | 日志系统</span>
+                        <span class="hidden-mobile">MySQL | 深入浅出索引</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -429,8 +427,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/06/04/%E5%8D%9A%E5%AE%A2%E6%93%8D%E4%BD%9C%E6%8C%87%E5%8D%97/" title="博客操作指南">
-                        <span class="hidden-mobile">博客操作指南</span>
+                      <a href="/2023/06/05/02%E8%AE%B2%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" title="MySQL | 日志系统">
+                        <span class="hidden-mobile">MySQL | 日志系统</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>

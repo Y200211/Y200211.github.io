@@ -242,14 +242,14 @@
       <h1 class="index-header">
         
         <a href="/2023/06/07/04%E8%AE%B2%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E7%B4%A2%E5%BC%95/" target="_self">
-          MySQL | ����ǳ������
+          MySQL | 深入浅出索引
         </a>
       </h1>
 
       
       <a class="index-excerpt index-excerpt__noimg" href="/2023/06/07/04%E8%AE%B2%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E7%B4%A2%E5%BC%95/" target="_self">
         <div>
-          ����һ�������ֳ�����ʵ�֣���ϣ�����������飬N����  ��ϣ��   һ���Ǹ�һ������ֵ��Ȼ��ͨ����ϣ���������N��ͨ�����N����ȡ����Ҫ��ֵ����ʱ�����������������N������ǹ�ϣ��ͻ����ʱ�ͻ��ں����һ����������ϣ������ɾ��ʱ�临�Ӷȶ���O(n)��������
+          索引一般有三种常见的实现：哈希表，有序数组，N叉树  哈希表   一般是给一个想查的值，然后通过哈希函数算出来N，通过这个N就能取到想要的值。有时候两个数算出来都是N，这就是哈希冲突，这时就会在后面加一个链表。哈希表的增删改时间复杂度都是O(n)，但是区域查询会很麻烦，因为它是无序的，区域内的数每个都要查一次，所以，哈希表这种结构适用于只有等值查询的场景，比如Memcached及其他一些NoSQL
         </div>
       </a>
 
@@ -288,9 +288,9 @@
           <div class="post-meta">
             <i class="iconfont icon-tags"></i>
             
-              <a href="/tags/%EF%BF%BD%EF%BF%BD%EF%BF%BD%DD%BF%EF%BF%BD/">#���ݿ�</a>
+              <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
             
-              <a href="/tags/%EF%BF%BD%EF%BF%BD%EF%BF%BD%EF%BF%BD/">#����</a>
+              <a href="/tags/%E7%B4%A2%E5%BC%95/">#索引</a>
             
           </div>
         
@@ -304,15 +304,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/06/05/02%E8%AE%B2%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" target="_self">
-          MySQL | 日志系统
+        <a href="/2023/06/06/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/" target="_self">
+          MySQL | 事务隔离
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/06/05/02%E8%AE%B2%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/06/06/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/" target="_self">
         <div>
-          首先介绍两个日志的基本概念，一个是物理操作，一个是逻辑操作。  物理操作   物理操作是对数据库底层数据存储结构的操作，即对数据在物理存储设备上的读写操作，例如读取和写入具体的数据块、页或者记录等。物理操作直接访问存储设备，包括对设备的读取、写入、删除操作等，因此它对应着实际的存储结构。 因为redolog是Innodb中特有的日志，又因为存储引擎在最底层，所以redolog是物理操作。  逻辑操
+          首先先上广为人知的知识点：  1、事务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读3、事务隔离级别：读未提交、读提交、可重复读、串行化4、不同事务隔离级别的区别：   读未提交：一个事务还未提交，它所做的变更就可以被别的事务看到    读提交：一个事务提交之后，它所做的变更才可以被别的事务看到可重复读：一个事务执
         </div>
       </a>
 
@@ -320,8 +320,8 @@
         
           <div class="post-meta mr-3">
             <i class="iconfont icon-date"></i>
-            <time datetime="2023-06-05 00:00" pubdate>
-              2023-06-05
+            <time datetime="2023-06-06 00:00" pubdate>
+              2023-06-06
             </time>
           </div>
         
@@ -367,15 +367,15 @@
     <article class="col-12 col-md-12 mx-auto index-info">
       <h1 class="index-header">
         
-        <a href="/2023/06/05/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/" target="_self">
-          MySQL | 事务隔离
+        <a href="/2023/06/05/02%E8%AE%B2%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" target="_self">
+          MySQL | 日志系统
         </a>
       </h1>
 
       
-      <a class="index-excerpt index-excerpt__noimg" href="/2023/06/05/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/" target="_self">
+      <a class="index-excerpt index-excerpt__noimg" href="/2023/06/05/02%E8%AE%B2%E6%97%A5%E5%BF%97%E7%B3%BB%E7%BB%9F/" target="_self">
         <div>
-          首先先上广为人知的知识点：   1、务的特性：原子性（A）、一致性（C）、隔离性（I）、持久性（D）   2、多事务同时执行的时候，可能会出现的问题：脏读、不可重复读、幻读3、事务隔离级别：读未提交、读提交、可重复读、串行化4、不同事务隔离级别的区别：   读未提交：一个事务还未提交，它所做的变更就可以被别的事务看到    读提交：一个事务提交之后，它所做的变更才可以被别的事务看到可重复读：一个
+          首先介绍两个日志的基本概念，一个是物理操作，一个是逻辑操作。  物理操作   物理操作是对数据库底层数据存储结构的操作，即对数据在物理存储设备上的读写操作，例如读取和写入具体的数据块、页或者记录等。物理操作直接访问存储设备，包括对设备的读取、写入、删除操作等，因此它对应着实际的存储结构。 因为redolog是Innodb中特有的日志，又因为存储引擎在最底层，所以redolog是物理操作。  逻辑操
         </div>
       </a>
 
