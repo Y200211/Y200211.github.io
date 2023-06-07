@@ -31,6 +31,33 @@
   
   
   <entry>
+    <title>go语言内存管理&amp;优化思路</title>
+    <link href="/2023/06/07/go%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86&amp;%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/"/>
+    <url>/2023/06/07/go%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86&amp;%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/</url>
+    
+    <content type="html"><![CDATA[<blockquote><p>由于滴滴二面的时候提到了GC，吟唱完之后面试官问我实践开发中怎么减少GC的次数来提高性能，只答出来一个有的时候可以传值代替穿指针（原因不解释了），面试官问还有吗，彻底不会了，正好参加字节这个青训营，有一节课讲到这里了，做一下笔记吧，要不又白看了。</p></blockquote><h2 id="1-1-内存分配—分块"><a href="#1-1-内存分配—分块" class="headerlink" title="1.1 内存分配—分块"></a>1.1 内存分配—分块</h2><p>首先讲一讲go语言是怎么做对象的内存分配的，他是把内存分成不同大小的块，然后看对象的大小来决定要把它放进多大的块里，再把这些块分类，一类是没有指针的对象（不需要GC），一类是有指针的对象（需要GC）。所以根据上面这些条件找出一个合适的块，就完成了一次内存分配</p><h2 id="1-2-Go内存管理优化"><a href="#1-2-Go内存管理优化" class="headerlink" title="1.2 Go内存管理优化"></a>1.2 Go内存管理优化</h2><p>要进行优化，就先要知道他有什么问题和我们常用的场景有哪些：</p><ol><li>对象分配是非常高频的操作，每秒分配GB级别的内存</li><li>小对象占比高，需要对小对象进行特定的优化</li><li>Go本身的内存分配路径非常长，非常耗时</li></ol><h2 id="1-3-优化方案：Balance-GC"><a href="#1-3-优化方案：Balance-GC" class="headerlink" title="1.3 优化方案：Balance GC"></a>1.3 优化方案：Balance GC</h2><ol><li>把每个g（goroutine）都绑定一大块内存（1KB），称作goroutine allocation buffer(GAB)</li><li>然后再这一块大内存上进行小对象的分配，这样就不会和别的冲突，减短了分配路径</li><li>进而可以进行指针对象风格的分配，如下图：</li></ol><p><img src="https://secure2.wostatic.cn/static/41F258iLy1tLaBAQYwvdb/image.png?auth_key=1686140109-vYVNAEbYkNkhLeqeo8JcUM-0-530ef44c91696a34f5fec75810639670"></p><p>当然这个大块内存的分配走的还是正常的分配路径，但是里面的小对象分配会简单高效很多，所以本质上是将多个小对象的分配合并成了一个大对象的分配。</p><p>这又引出了另外一个问题，就是有的时候一大块内存中只有几个小对象，这导致了整块内存都不能释放，下面是解决方案：</p><p>  当GBA的数量到一个值的时候，对GBA进行清理，会把散落的对象集中起来，然后把原来的内存释放掉。</p><p>  <img src="https://secure2.wostatic.cn/static/e2WKcPWREfYojmt31kjY33/image.png?auth_key=1686140725-h1KhgcAK9djHajSs8JeXh2-0-816d729fdca3f9014630ed3eedde765e"></p><p>总结：</p><p>Go对象分配的性能问题：</p><ul><li>分配路经过长</li><li>小对象居多</li></ul><p>解决方案Balance GC：</p><ul><li>指针碰撞风格的内存分配</li><li>实现了copying GC（就是上面那张图）</li></ul><p>接下来回到问题本身，怎么优化</p><ol><li>首先想到的就是暴力做法，直接把执行GC的阈值降低就行了，简单来说就是让GC执行的更频繁，这样内存也不会爆的太快。</li><li>对象池技术，对象池是预先分配和重用对象的集合，避免频繁地创建和销毁对象。通过使用对象池，可以减少新对象的分配次数，从而减少 GC 的压力。</li><li>使用并发和异步技术：通过并发和异步的设计，可以更好地隐藏 GC 的开销。例如，使用 Goroutine 进行并发处理，利用通道（Channel）进行数据传递，将 GC 的负担分摊到不同的时间段和线程中。</li></ol>]]></content>
+    
+    
+    <categories>
+      
+      <category>Go</category>
+      
+    </categories>
+    
+    
+    <tags>
+      
+      <tag>Go</tag>
+      
+      <tag>GC</tag>
+      
+    </tags>
+    
+  </entry>
+  
+  
+  
+  <entry>
     <title>MySQL | 事务隔离</title>
     <link href="/2023/06/06/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/"/>
     <url>/2023/06/06/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/</url>
