@@ -16,27 +16,23 @@
   <meta name="author" content="杨佰鑫">
   <meta name="keywords" content="">
   
-    <meta name="description" content="由于滴滴二面的时候提到了GC，吟唱完之后面试官问我实践开发中怎么减少GC的次数来提高性能，只答出来一个有的时候可以传值代替穿指针（原因不解释了），面试官问还有吗，彻底不会了，正好参加字节这个青训营，有一节课讲到这里了，做一下笔记吧，要不又白看了。  1.1 内存分配—分块首先讲一讲go语言是怎么做对象的内存分配的，他是把内存分成不同大小的块，然后看对象的大小来决定要把它放进多大的块里，再把这些块">
+    <meta name="description" content="首先介绍一下读锁和写锁。读锁（共享锁）不允许别人写但是允许和别人一起读；写锁（排他锁）既不允许写也不允许读，所以叫排他锁。只读取数据的时候一般是加读锁，增删改数据的时候一般加写锁。  全局锁   全局锁就是把整个库锁住，一般用来进行全局逻辑备份，让全局都处于只读状态，这么做是为了在操作的时候视图逻辑时间点一致。说到一致性视图，官方自带的逻辑备份工具是mysqldump。当mysqldump使用参数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="go语言内存管理&amp;优化思路">
-<meta property="og:url" content="http://example.com/2023/06/07/go%E8%AF%AD%E8%A8%80%E5%86%85%E5%AD%98%E7%AE%A1%E7%90%86&%E4%BC%98%E5%8C%96%E6%80%9D%E8%B7%AF/index.html">
+<meta property="og:title" content="MySQL | 全局锁和表锁">
+<meta property="og:url" content="http://example.com/2023/06/14/06%E8%AE%B2%E5%85%A8%E5%B1%80%E9%94%81%E5%92%8C%E8%A1%A8%E9%94%81/index.html">
 <meta property="og:site_name" content="Y&#39;s blog">
-<meta property="og:description" content="由于滴滴二面的时候提到了GC，吟唱完之后面试官问我实践开发中怎么减少GC的次数来提高性能，只答出来一个有的时候可以传值代替穿指针（原因不解释了），面试官问还有吗，彻底不会了，正好参加字节这个青训营，有一节课讲到这里了，做一下笔记吧，要不又白看了。  1.1 内存分配—分块首先讲一讲go语言是怎么做对象的内存分配的，他是把内存分成不同大小的块，然后看对象的大小来决定要把它放进多大的块里，再把这些块">
+<meta property="og:description" content="首先介绍一下读锁和写锁。读锁（共享锁）不允许别人写但是允许和别人一起读；写锁（排他锁）既不允许写也不允许读，所以叫排他锁。只读取数据的时候一般是加读锁，增删改数据的时候一般加写锁。  全局锁   全局锁就是把整个库锁住，一般用来进行全局逻辑备份，让全局都处于只读状态，这么做是为了在操作的时候视图逻辑时间点一致。说到一致性视图，官方自带的逻辑备份工具是mysqldump。当mysqldump使用参数">
 <meta property="og:locale" content="zh_CN">
-<meta property="og:image" content="https://secure2.wostatic.cn/static/41F258iLy1tLaBAQYwvdb/image.png?auth_key=1687008602-dLWV8uyXSKHHLBUTuG9fHu-0-987d5529abfda2c7dce7f76e2e621db9">
-<meta property="og:image" content="https://secure2.wostatic.cn/static/e2WKcPWREfYojmt31kjY33/image.png?auth_key=1687008602-uFnU8kxuWA5RPFfgALcPhc-0-878c1b7b5c45fa0c8711f9d48e6e96db">
-<meta property="og:image" content="https://secure2.wostatic.cn/static/63Dn45rcE1t7tAUH1ttbPM/image.png?auth_key=1687008602-suisnJZUidydCfi55rygUG-0-7a22821ff36da88076ab53cf98c7d86e">
-<meta property="article:published_time" content="2023-06-06T16:00:00.000Z">
-<meta property="article:modified_time" content="2023-06-17T13:30:43.136Z">
+<meta property="article:published_time" content="2023-06-13T16:00:00.000Z">
+<meta property="article:modified_time" content="2023-06-17T13:26:17.228Z">
 <meta property="article:author" content="ybx">
-<meta property="article:tag" content="Go">
-<meta property="article:tag" content="GC">
+<meta property="article:tag" content="数据库">
+<meta property="article:tag" content="锁">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:image" content="https://secure2.wostatic.cn/static/41F258iLy1tLaBAQYwvdb/image.png?auth_key=1687008602-dLWV8uyXSKHHLBUTuG9fHu-0-987d5529abfda2c7dce7f76e2e621db9">
   
   
   
-  <title>go语言内存管理&amp;优化思路 - Y&#39;s blog</title>
+  <title>MySQL | 全局锁和表锁 - Y&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
@@ -219,7 +215,7 @@
       <div class="banner-text text-center fade-in-up">
         <div class="h2">
           
-            <span id="subtitle" data-typed-text="go语言内存管理&amp;优化思路"></span>
+            <span id="subtitle" data-typed-text="MySQL | 全局锁和表锁"></span>
           
         </div>
 
@@ -230,8 +226,8 @@
     
       <span class="post-meta">
         <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-        <time datetime="2023-06-07 00:00" pubdate>
-          2023年6月7日 凌晨
+        <time datetime="2023-06-14 00:00" pubdate>
+          2023年6月14日 凌晨
         </time>
       </span>
     
@@ -242,7 +238,7 @@
       <span class="post-meta mr-2">
         <i class="iconfont icon-chart"></i>
         
-          975 字
+          1k 字
         
       </span>
     
@@ -299,49 +295,35 @@
         <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
-            <h1 style="display: none">go语言内存管理&amp;优化思路</h1>
+            <h1 style="display: none">MySQL | 全局锁和表锁</h1>
             
             
               <div class="markdown-body">
                 
-                <blockquote>
-<p>由于滴滴二面的时候提到了GC，吟唱完之后面试官问我实践开发中怎么减少GC的次数来提高性能，只答出来一个有的时候可以传值代替穿指针（原因不解释了），面试官问还有吗，彻底不会了，正好参加字节这个青训营，有一节课讲到这里了，做一下笔记吧，要不又白看了。</p>
-</blockquote>
-<h2 id="1-1-内存分配—分块"><a href="#1-1-内存分配—分块" class="headerlink" title="1.1 内存分配—分块"></a>1.1 内存分配—分块</h2><p>首先讲一讲go语言是怎么做对象的内存分配的，他是把内存分成不同大小的块，然后看对象的大小来决定要把它放进多大的块里，再把这些块分类，一类是没有指针的对象（不需要GC），一类是有指针的对象（需要GC）。所以根据上面这些条件找出一个合适的块，就完成了一次内存分配</p>
-<h2 id="1-2-Go内存管理优化"><a href="#1-2-Go内存管理优化" class="headerlink" title="1.2 Go内存管理优化"></a>1.2 Go内存管理优化</h2><p>要进行优化，就先要知道他有什么问题和我们常用的场景有哪些：</p>
-<ol>
-<li>对象分配是非常高频的操作，每秒分配GB级别的内存</li>
-<li>小对象占比高，需要对小对象进行特定的优化</li>
-<li>Go本身的内存分配路径非常长，非常耗时</li>
-</ol>
-<h2 id="1-3-优化方案：Balance-GC"><a href="#1-3-优化方案：Balance-GC" class="headerlink" title="1.3 优化方案：Balance GC"></a>1.3 优化方案：Balance GC</h2><ol>
-<li>把每个g（goroutine）都绑定一大块内存（1KB），称作goroutine allocation buffer(GAB)</li>
-<li>然后再这一块大内存上进行小对象的分配，这样就不会和别的冲突，减短了分配路径</li>
-<li>进而可以进行指针对象风格的分配，如下图：</li>
-</ol>
-<p><img src="https://secure2.wostatic.cn/static/41F258iLy1tLaBAQYwvdb/image.png?auth_key=1687008602-dLWV8uyXSKHHLBUTuG9fHu-0-987d5529abfda2c7dce7f76e2e621db9" srcset="/img/loading.gif" lazyload></p>
-<p>当然这个大块内存的分配走的还是正常的分配路径，但是里面的小对象分配会简单高效很多，所以本质上是将多个小对象的分配合并成了一个大对象的分配。</p>
-<p>这又引出了另外一个问题，就是有的时候一大块内存中只有几个小对象，这导致了整块内存都不能释放，下面是解决方案：</p>
-<p>  当GBA的数量到一个值的时候，对GBA进行清理，会把散落的对象集中起来，然后把原来的内存释放掉。</p>
-<p>  <img src="https://secure2.wostatic.cn/static/e2WKcPWREfYojmt31kjY33/image.png?auth_key=1687008602-uFnU8kxuWA5RPFfgALcPhc-0-878c1b7b5c45fa0c8711f9d48e6e96db" srcset="/img/loading.gif" lazyload></p>
-<p>总结：</p>
-<p>Go对象分配的性能问题：</p>
+                <p>首先介绍一下读锁和写锁。读锁（共享锁）不允许别人写但是允许和别人一起读；写锁（排他锁）既不允许写也不允许读，所以叫排他锁。只读取数据的时候一般是加读锁，增删改数据的时候一般加写锁。</p>
 <ul>
-<li>分配路经过长</li>
-<li>小对象居多</li>
-</ul>
-<p>解决方案Balance GC：</p>
+<li><p>全局锁</p>
+<p>  全局锁就是把整个库锁住，一般用来进行全局逻辑备份，让全局都处于只读状态，这么做是为了在操作的时候视图逻辑时间点一致。说到一致性视图，官方自带的逻辑备份工具是mysqldump。当mysqldump使用参数–single-transaction的时候，导数据之前就会启动一个事务，来确保拿到一致性视图。而由于MVCC的支持，这个过程中数据是可以正常更新的。</p>
+<p>  你也许会问，<strong>既然要全库只读，为什么不使用set global readonly&#x3D;true的方式呢</strong>？</p>
 <ul>
-<li>指针碰撞风格的内存分配</li>
-<li>实现了copying GC（就是上面那张图）</li>
+<li>第一是有些时候会通过global这个参数来判断是主库还是从库，所以容易造成错误</li>
+<li>第二是有些时候发生异常断开后，这个参数并不会自己复位，会一直保持不可写的状态</li>
 </ul>
-<p>接下来回到问题本身，怎么优化</p>
-<ol>
-<li>首先想到的就是暴力做法，直接把执行GC的阈值降低就行了，简单来说就是让GC执行的更频繁，这样内存也不会爆的太快。</li>
-<li>对象池技术，对象池是预先分配和重用对象的集合，避免频繁地创建和销毁对象。通过使用对象池，可以减少新对象的分配次数，从而减少 GC 的压力。</li>
-<li>使用并发和异步技术：通过并发和异步的设计，可以更好地隐藏 GC 的开销。例如，使用 Goroutine 进行并发处理，利用通道（Channel）进行数据传递，将 GC 的负担分摊到不同的时间段和线程中。</li>
-</ol>
-<p><img src="https://secure2.wostatic.cn/static/63Dn45rcE1t7tAUH1ttbPM/image.png?auth_key=1687008602-suisnJZUidydCfi55rygUG-0-7a22821ff36da88076ab53cf98c7d86e" srcset="/img/loading.gif" lazyload></p>
+</li>
+<li><p>表级锁</p>
+<p>  表锁有两种，一种是需要显式调用的，一种是非显式调用的</p>
+<ul>
+<li><strong>表锁的语法是 lock tables … read&#x2F;write。</strong></li>
+<li><strong>另一类表级的锁是MDL（metadata lock)。</strong>MDL不需要显式使用，在访问一个表的时候会被自动加上。</li>
+</ul>
+</li>
+</ul>
+<p>MDL上有个错误很容易发生，容易在操作小表的时候发生问题。当MDL锁住的时候，有想改写表中数据的需要，这时就会阻塞，当后面再有来申请读锁的时候就会不断重试，很快线程就会爆</p>
+<p>基于上面的分析，我们来讨论一个问题，<strong>如何安全地给小表加字段？</strong></p>
+<p>首先我们要解决长事务，事务不提交，就会一直占着MDL锁。在MySQL的information_schema 库的 innodb_trx 表中，你可以查到当前执行中的事务。如果你要做DDL变更的表刚好有长事务在执行，要考虑先暂停DDL，或者kill掉这个长事务。</p>
+<p>但考虑一下这个场景。如果你要变更的表是一个热点表，虽然数据量不大，但是上面的请求很频繁，而你不得不加个字段，你该怎么做呢？</p>
+<p>这时候kill可能未必管用，因为新的请求马上就来了。比较理想的机制是，在alter table语句里面设定等待时间，如果在这个指定的等待时间里面能够拿到MDL写锁最好，拿不到也不要阻塞后面的业务语句，先放弃。之后开发人员或者DBA再通过重试命令重复这个过程。</p>
+<p>MariaDB已经合并了AliSQL的这个功能，所以这两个开源分支目前都支持DDL NOWAIT&#x2F;WAIT n这个语法。</p>
 
                 
               </div>
@@ -360,7 +342,7 @@
     
       <span class="category-chain">
         
-  <a href="/categories/Go/" class="category-chain-item">Go</a>
+  <a href="/categories/MySQL/" class="category-chain-item">MySQL</a>
   
   
 
@@ -375,9 +357,9 @@
     <div class="post-meta">
       <i class="iconfont icon-tags"></i>
       
-        <a href="/tags/Go/">#Go</a>
+        <a href="/tags/%E6%95%B0%E6%8D%AE%E5%BA%93/">#数据库</a>
       
-        <a href="/tags/GC/">#GC</a>
+        <a href="/tags/%E9%94%81/">#锁</a>
       
     </div>
   
@@ -389,8 +371,8 @@
 
   <div class="license-box my-3">
     <div class="license-title">
-      <div>go语言内存管理&amp;优化思路</div>
-      <div>http://example.com/2023/06/07/go语言内存管理&amp;优化思路/</div>
+      <div>MySQL | 全局锁和表锁</div>
+      <div>http://example.com/2023/06/14/06讲全局锁和表锁/</div>
     </div>
     <div class="license-meta">
       
@@ -402,7 +384,7 @@
       
         <div class="license-meta-item license-meta-date">
           <div>发布于</div>
-          <div>2023年6月7日</div>
+          <div>2023年6月14日</div>
         </div>
       
       
@@ -434,9 +416,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2023/06/07/04%E8%AE%B2%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E7%B4%A2%E5%BC%95/" title="MySQL | 深入浅出索引">
+                      <a href="/2023/06/17/07%E8%AE%B2%E5%A6%82%E4%BD%95%E5%87%8F%E5%B0%91%E8%A1%8C%E7%BA%A7%E9%94%81%E5%AF%B9%E6%80%A7%E8%83%BD%E7%9A%84%E5%BD%B1%E5%93%8D/" title="MySQL | 如何减少行级锁对性能的影响">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">MySQL | 深入浅出索引</span>
+                        <span class="hidden-mobile">MySQL | 如何减少行级锁对性能的影响</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -444,8 +426,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2023/06/06/03%E8%AE%B2%E4%BA%8B%E5%8A%A1%E9%9A%94%E7%A6%BB/" title="MySQL | 事务隔离">
-                        <span class="hidden-mobile">MySQL | 事务隔离</span>
+                      <a href="/2023/06/07/04%E8%AE%B2%E6%B7%B1%E5%85%A5%E6%B5%85%E5%87%BA%E7%B4%A2%E5%BC%95/" title="MySQL | 深入浅出索引">
+                        <span class="hidden-mobile">MySQL | 深入浅出索引</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
